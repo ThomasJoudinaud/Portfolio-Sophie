@@ -182,10 +182,9 @@ function adminPanel (travaux) {
 adminPanel(travaux)
 
 const deleteWork = async function (e) {
-    e.preventDefault()
     await fetch("http://localhost:5678/api/works/" + e, {
         headers: {
-            Authorization: "BEARER" + getCookie("token"),
+            Authorization: "BEARER " + getCookie("token"),
         },
         method:"DELETE"
     })
