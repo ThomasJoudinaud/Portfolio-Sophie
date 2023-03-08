@@ -1,3 +1,13 @@
+// Créer des cookie avec timer en jour
+export function setCookie (name, value, days) {
+  const date = new Date()
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000))
+  let expires = "expires=" + date.toUTCString()
+  document.cookie = `${name}=${value}; ${expires}; path=/`
+}
+
+
+
 // fonction pour récupérer les information du formulaire de connexion
 
   async function logIn() {
@@ -23,16 +33,18 @@
           if (r.ok === true) {
             return r.json()
           }
-          alert("Email ou mot de passe invalide")
+          const errorMDP = document.querySelector("#erreurMDP")
+          errorMDP.style.display = "block"
         } catch (e) {
-          console.error("Erreur Serveur")
+          console.error(e)
         }
     
       }
       fetchLogin()
-      //je créer un sessionStorage du token pour garder la connexion tout en limitant les possibles intrusions non voulu qu'aurait pu causer un localStorage
+      //je créer un cookie admin
         .then(user => {
-          sessionStorage.setItem("token", JSON.stringify(user.token))
+          const userToken = user.token
+          setCookie("token", userToken, 1)
           location.replace("./index.html")
         })
     })

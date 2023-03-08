@@ -1,5 +1,4 @@
-const token = sessionStorage.getItem("token")
-console.log(token)
+import {setCookie} from "./script-connexion.js";
 
 // Je créer mon lien avec l'API ou se trouve les travaux de Sophie
 const travaux = await fetch("http://localhost:5678/api/works")
@@ -76,16 +75,26 @@ boutonRestaurant.addEventListener("click", function(){
 })
 
 //utilité du bouton logout
+function deleteCookie(name){
+    setCookie(name, null,null)
+}
+
 const logout = document.querySelector("#logoutButton")
 logout.addEventListener("click", function(){
-    sessionStorage.clear()
+    deleteCookie("token")
 })
 
 
 //Modification de la page d'acceuil quand l'utilisateur est log
-const tokenStorage = sessionStorage.token
+function getCookie(name){
+   const cDecoded = decodeURIComponent(document.cookie)
+   let result = cDecoded.substring(name.length + 1)
+   return result
+}
 
-if(tokenStorage !== undefined){
+const cookieOK = getCookie("token")
+
+if(cookieOK){
     const filtreAdmin = document.querySelector("#filtre")
     filtreAdmin.style.display = "none"
     const loginButton = document.querySelector("#loginButton")
@@ -173,12 +182,23 @@ function adminPanel (travaux) {
 }
 adminPanel(travaux)
 
-const deleteWork = async function (e) {
-    await fetch("http://localhost:5678/api/works/" + e, {
-        method: "DELETE",
+const deleteWork = async function (result) {
+    await fetch("http://localhost:5678/api/works/" + result, {
         headers: {
-            "Authorization" :  token
-        }  
+            "Authorization" :  "BEARER" + getCookie("token")
+        },
+        method:"DELETE"
+    })
+    .then(function (response) {
+        if (response.ok){
+            return response.json()
+        }
+    })
+    .then(function (work){
+        console.log(work)
+    })
+    .catch(function (error){
+        console.log(error)
     })
 }
 
