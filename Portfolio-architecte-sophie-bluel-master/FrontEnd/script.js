@@ -4,7 +4,6 @@ import {setCookie} from "./script-connexion.js";
 const travaux = await fetch("http://localhost:5678/api/works")
     .then(travaux => travaux.json())
     
-
 // fonction qui va me générer les cartes automatiquement avec comme base
 // les travaux de Sophie
 
@@ -182,10 +181,11 @@ function adminPanel (travaux) {
 }
 adminPanel(travaux)
 
-const deleteWork = async function (result) {
-    await fetch("http://localhost:5678/api/works/" + result, {
+const deleteWork = async function (e) {
+    e.preventDefault()
+    await fetch("http://localhost:5678/api/works/" + e, {
         headers: {
-            "Authorization" :  "BEARER" + getCookie("token")
+            Authorization: "BEARER" + getCookie("token"),
         },
         method:"DELETE"
     })
@@ -208,4 +208,3 @@ const trashWork = document.querySelectorAll("#trashClick").forEach( e => {
         deleteWork(result)
     })
 })
-
