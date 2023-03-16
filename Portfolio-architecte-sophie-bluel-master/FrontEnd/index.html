@@ -91,8 +91,8 @@
 </main>
 <aside id="modalAdmin" aria-hidden="true" role="dialog" aria-labelledby="modal" style="display:none">
 	<div id="modal">
-		<div id="closeButtonDiv">
-			<button id="closeModalButton">X</i></button>
+		<div class="closeButtonDiv">
+			<button class="closeModalButton"><i class="fa-solid fa-x"></i></i></button>
 		</div>
 		<div id="modalContent">
 			<h2>Galerie photo</h2>
@@ -105,8 +105,37 @@
 			</div>
 		</div>
 	</div>
+	<div id="modalAdd" style="display:none">
+		<div id="top">
+			<button id="lastPage"><i class="fa-solid fa-arrow-left"></i></button>
+			<div class="closeButtonDiv">	
+				<button class="closeModalButton"><i class="fa-solid fa-x"></i></button>
+			</div>
+		</div>
+		<h2>Ajout photo</h2>
+		<form action="" method="post" id="formulaireAjoutPhoto" enctype="multipart/form-data">
+			<div class="drag-area">
+				<div class="icon"><i class="fa-regular fa-image"></i></div>
+				<button id="dragButton">+ Ajouter photo</button>
+				<p>jpg, png: 4mo max</p>
+				<input type="file"  id="dragInput" hidden>
+			</div>
+			<div id="addForm">
+				<label for="workTitle" class="labelForm">Titre</label>
+				<input type="text" name="workTitle" id="workTitle">
+				<label for="workCategory" class="labelForm">Catégorie</label>
+				<select name="workCategory" id="workCategory">
+					<option value="1">Objet</option>
+					<option value="2">Appartement</option>
+					<option value="3">Hôtels & restaurants</option>
+				</select>
+			</div>
+			<input type="submit" value="Valider">
+			<p id="succesAdd">L'envoie du formulaire a réussi</p>
+			<p id="erreurAdd">L'envoie du formulaire a échouer, vérifier les informations données</p>
+		</form>
+	</div>
 </aside>
-
 <footer>
 	<nav>
 		<ul>
@@ -115,7 +144,6 @@
 	</nav>
 </footer>
 
-<div class="lol"><i class="fa-regular fa-trash-can"></i></div>
 
 </body>
 </html>

@@ -407,7 +407,7 @@ footer nav ul {
 	align-items: center;
 	background: rgb(0, 0, 0, 0.5);
 }
-#modal{
+#modal, #modalAdd{
 	background: white;
 	border-radius: 10px;
 	width: 39em;
@@ -417,15 +417,16 @@ footer nav ul {
 	align-items: center;
 	flex-direction: column;
 }
-#closeButtonDiv{
+.closeButtonDiv{
 	display: flex;
 	justify-content: end;
 	width: 93%;
 }
-#closeModalButton{
+.closeModalButton, #lastPage{
 	border: none;
 	cursor: pointer;
 	background-color: #FFFFFF;
+	font-size: 15px;
 }
 #modalContent{
 	width: 70%;
@@ -462,6 +463,7 @@ footer nav ul {
 	background: #1D6154;
 	border-radius: 60px;
 	width: 60%;
+	height: 30%;
 	cursor: pointer;
 }
 #removeButton{
@@ -484,7 +486,7 @@ footer nav ul {
 	width: 100%;
 	overflow: auto;
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-template-rows: 1fr 1fr 1fr auto;
 	grid-column-gap: 0.5em;
 	grid-row-gap: 0.5em;
@@ -520,4 +522,138 @@ footer nav ul {
 	right: -70%;
 
 	border-radius: 5px;
+}
+/* modal ajout travaux */
+#modalAdd{
+	display: flex;
+}
+#top{
+	display: flex;
+	justify-content: space-between;
+	width: 93%;
+	height: 5%;
+}
+#modalAdd h2{
+	height: 10%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 26px;
+	line-height: 30px;
+	text-align: center;
+	color: #000000;
+}
+#formulaireAjoutPhoto{
+	border-radius: 3px;
+	height: 80%;
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Drag & Drop */
+.drag-area{
+    height: 40%;
+    width: 100%;
+    border-radius: 3px;
+	background: #E8F1F7;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+	justify-content: space-evenly;
+}
+.drag-area .icon{
+	font-size: 3.1em;
+    color: #B9C5CC;
+}
+.drag-area button{
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    color: rgb(66, 59, 70);;
+	background: #CBD6DC;
+	border-radius: 50px;
+    cursor: pointer;
+
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 16px;
+	text-align: center;
+	color: #306685;
+	}
+.drag-area p{
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 10px;
+	text-align: center;
+	color: #444444;
+}
+#erreurAdd{
+	color: red;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 15px;
+	display: none;
+	text-align: center;
+}
+ #succesAdd{
+	color: green;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 15px;
+	display: none;
+	text-align: center;
+ }
+.drag-area img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 5px;
+}
+/* suite formulaire */ 
+#addForm{
+	height: 40%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	border-bottom: 2px solid #B3B3B3;
+
+}
+.labelForm{
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	color: #444444;
+}
+#workTitle, #workCategory{
+	height: 3.1em;
+	background: #FFFFFF;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	border: none;
+	
+	text-indent: 5%;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 16px;
+	color: #444444;
+}
+#formulaireAjoutPhoto input[type="submit"]{
+	border: solid;
+	height: 8%;
+	width: 50%;
+	cursor: pointer;
 }
