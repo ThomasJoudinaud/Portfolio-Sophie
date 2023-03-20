@@ -400,8 +400,8 @@ footer nav ul {
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 100vw;
-	height: 100vh;
+	width: 100%;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -410,8 +410,8 @@ footer nav ul {
 #modal, #modalAdd{
 	background: white;
 	border-radius: 10px;
-	width: 39em;
-	height: 44em;
+	width: 40em;
+	height: 50em;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -492,12 +492,18 @@ footer nav ul {
 	grid-row-gap: 0.5em;
 }
 #adminWork figure{
+	position: relative;
 	display: flex;
 	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
 }
 #adminWork img{
+	box-sizing: border-box;
 	width: 100%;
 	height: 70%;
+	object-fit: cover;
 }
 #adminWork p{
 	font-family: 'Work Sans';
@@ -507,6 +513,7 @@ footer nav ul {
 	color: #000000;
 	padding-top: 0.3em;
 	cursor: pointer;
+	height: 20%;
 }
 #adminWork button{
 	background-image: url(images/trash.png);
@@ -517,9 +524,9 @@ footer nav ul {
 	width: 20px;
 	cursor: pointer;
 
-	position: relative;
-	top: 17%;
-	right: -70%;
+	position: absolute;
+	top: 5px;
+	right: 5px;
 
 	border-radius: 5px;
 }
@@ -546,6 +553,19 @@ footer nav ul {
 	line-height: 30px;
 	text-align: center;
 	color: #000000;
+}
+.dropImage{
+	display: none;
+	height: 100%;
+	width: 100%;
+}
+.hiddenDrop{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	height: 100%;
+	width: 100%;
 }
 #formulaireAjoutPhoto{
 	border-radius: 3px;

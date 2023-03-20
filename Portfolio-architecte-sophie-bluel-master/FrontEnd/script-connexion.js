@@ -8,7 +8,6 @@ export function setCookie (name, value, days) {
 
 
 // fonction pour récupérer les information du formulaire de connexion
-
   async function logIn() {
     const formLog = document.querySelector("#formulaireConnexion")
     formLog.addEventListener("submit", function(event) {

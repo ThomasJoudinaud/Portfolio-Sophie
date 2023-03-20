@@ -1,27 +1,32 @@
-import {setCookie} from "./script-connexion.js";
+import { setCookie } from "./script-connexion.js"
 
-// Je créer mon lien avec l'API ou se trouve les travaux de Sophie
-let travaux = window.sessionStorage.getItem("localWork")
-
-if (travaux === null){
-    await fetch("http://localhost:5678/api/works", {
-        method: 'GET'
+// Récupérer les travaux de l'architecte via l'API ou par le sessionStorage
+let work = window.sessionStorage.getItem("works")
+async function fetchAPI(){
+    if(work === null) {
+        await fetch("http://localhost:5678/api/works", {
+        method:"GET"
     })
-    .then(function (res) {
-        if (res.ok) {
-            return res.json()
-        }
-    })
-    .then(function(save) {
-    window.sessionStorage.setItem("localWork", JSON.stringify(save))
-    creerCarte(save)
-    })
-} else {
-    travaux = JSON.parse(travaux)
+        .then(res => {
+            if(res.ok){   
+                return res.json()
+            } else {
+                console.log("Erreur lors de la récupération des fichiers via l'API")
+            }
+        })
+        .then(result => {
+            window.sessionStorage.setItem("works", JSON.stringify(result))
+            location.reload()
+        })
+    } else {
+        work = JSON.parse(work)
+    }
 }
+fetchAPI()
+const travaux = Object.values(work)
 
-// fonction qui va me générer les cartes automatiquement avec comme base
-// les travaux de Sophie
+
+// fonction qui va me générer les cartes automatiquement avec comme base les travaux de Sophie
 function creerCarte (travaux) {
     for (let i = 0; i < travaux.length; i++) {
 
@@ -47,19 +52,8 @@ function creerCarte (travaux) {
     }
 }
 creerCarte(travaux)
-affichageFiltrer(travaux)
-
-// fonction de filtre de l'affichage des travaux
-function affichageFiltrer(travaux){
-    for(let i = travaux.length -1; i > 0; i--) {
-        const travail = travaux[i]
-        console.log(travail)
-        
-    }
-}
 
 // les filtres des travaux
-
 // le filtre "Tous"
 const boutonTous = document.querySelector("#tous")
 boutonTous.addEventListener("click", function(){
@@ -71,7 +65,7 @@ boutonTous.addEventListener("click", function(){
 const boutonObjet = document.querySelector("#objet")
 boutonObjet.addEventListener("click", function(){
     const  filtreObjets = travaux.filter(travail => 
-        travail.categoryId === 1)
+        travail.categoryId == 1)
         document.querySelector(".gallery").innerHTML =""
         creerCarte(filtreObjets)
 })
@@ -80,7 +74,7 @@ boutonObjet.addEventListener("click", function(){
 const boutonAppartement = document.querySelector("#appartement")
 boutonAppartement.addEventListener("click", function(){
     const  filtreAppartement = travaux.filter(travail => 
-        travail.categoryId === 2)
+        travail.categoryId == 2)
         document.querySelector(".gallery").innerHTML =""
         creerCarte(filtreAppartement)
 })
@@ -89,14 +83,16 @@ boutonAppartement.addEventListener("click", function(){
 const boutonRestaurant = document.querySelector("#restaurant")
 boutonRestaurant.addEventListener("click", function(){
     const  filtreRestaurant = travaux.filter(travail => 
-        travail.categoryId === 3)
+        travail.categoryId == 3)
         document.querySelector(".gallery").innerHTML =""
         creerCarte(filtreRestaurant)
 })
 
-//utilité du bouton logout
+//Utilité du bouton logout
 function deleteCookie(name){
-    setCookie(name, null,null)
+    setCookie(name, null, null)
+    document.querySelector(".gallery").innerHTML =""
+    creerCarte(travaux)
 }
 
 const logout = document.querySelector("#logoutButton")
@@ -106,13 +102,12 @@ logout.addEventListener("click", function(){
 })
 
 
-//Modification de la page d'acceuil quand l'utilisateur est log
+//Modification de la page d'acceuil quand l'utilisateur est en mode Admin
 function getCookie(name){
    const cDecoded = decodeURIComponent(document.cookie)
    let result = cDecoded.substring(name.length + 1)
    return result
 }
-
 const cookieOK = getCookie("token")
 
 if(cookieOK){
@@ -160,9 +155,10 @@ const closeModal = function (e) {
 
     document.querySelector("#modalAdd").style.display = "none"
     document.querySelector("#modal").style.display = null
-    document.querySelector("#formulaireAjoutPhoto").reset()
     defaultModal = null
-
+    hiddenDrop.style.display = "flex"
+    dropImage.style.display = "none"
+    dropImage.innerHTML = ""
 }
 
 const stopPropagation = (e) => {
@@ -178,7 +174,6 @@ window.addEventListener("keydown", function(e){
         closeModal(e)
     }
 })
-
 
 function adminPanel (travaux) {
     for (let i = 0; i < travaux.length; i++) {
@@ -206,37 +201,56 @@ function adminPanel (travaux) {
     }
 }
 adminPanel(travaux)
-
 // Suppression des travaux
 document.querySelectorAll("#trashClick").forEach( e => {
     const result =  e.parentElement.dataset.id
+    const gallery = e.parentElement
     e.addEventListener("click", (e) => {
         e.preventDefault()
-        console.log(result)
+        gallery.remove()
+        deleteLocalWork(result)
         deleteWork(result)
     })
 })
+function deleteLocalWork(id) {
+    for ( let i = 0; i < travaux.length; i++){
+        let travail = travaux[i]
+        let index
+        if(travail.id == id){
+            index = travaux.indexOf(travail)
+            travaux.splice(index, 1)
+            window.sessionStorage.setItem("works", JSON.stringify(travaux))
+            document.querySelector(".gallery").innerHTML =""
+            creerCarte(travaux)
+        }
+    }
+}
 
 const deleteWork = async function (e) {
-    await fetch("http://localhost:5678/api/works/" + e, {
-        headers: {
-            Authorization: "BEARER " + getCookie("token"),
-        },
-        method:"DELETE"
-    })
+await fetch("http://localhost:5678/api/works/" + e, {
+    headers: {
+        Authorization: "BEARER " + getCookie("token"),
+    },
+    method:"DELETE"
+})
     .then(function (res) {
-            if (res.ok){
-                console.log("Fichier supprimer")
-            }else{
-                console.log("Erreur lors de la suppression")
-            }
-        })
-    }
+        if (res.ok){
+            console.log("Fichier supprimer")
+        }else{
+            console.log("Erreur lors de la suppression")
+        }
+    })
+}
 
 //Drag & Drop
+// Création de la zone de drop
+
 const dropArea = document.querySelector(".drag-area")
 const dragButton = dropArea.querySelector("#dragButton")
 const dragInput = dropArea.querySelector("#dragInput")
+
+const dropImage = document.querySelector(".dropImage")
+const hiddenDrop = document.querySelector(".hiddenDrop")
 
 let file
 
@@ -270,12 +284,13 @@ function showFile(){
 
     let valideExtensions = ["image/png","image/jpeg","image/jpg"]
     if(valideExtensions.includes(fileType)){
-        console.log("c'est une image")
         let fileReader = new FileReader()
         fileReader.onload = ()=>{
             let fileURL = fileReader.result
             let imgTag = `<img src="${fileURL}" alt="">`
-            dropArea.innerHTML = imgTag
+            hiddenDrop.style.display = "none"
+            dropImage.style.display = "flex"
+            dropImage.innerHTML = imgTag
         }
         fileReader.readAsDataURL(file)
     }else{
@@ -292,9 +307,12 @@ document.querySelector("#addButton").addEventListener("click", ()=> {
 document.querySelector("#lastPage").addEventListener("click", ()=> {
     document.querySelector("#modalAdd").style.display = "none"
     document.querySelector("#modal").style.display = null
-    document.querySelector("#formulaireAjoutPhoto").reset()
+    hiddenDrop.style.display = "flex"
+    dropImage.style.display = "none"
+    dropImage.innerHTML = ""
+    closeModal
+    openModal
 })
-
 
 async function envoieTravail(){
     const formInfo = document.querySelector("#formulaireAjoutPhoto")
@@ -304,7 +322,7 @@ async function envoieTravail(){
         let data = new FormData()
         data.append("image", file)
         data.append("title", document.querySelector("#workTitle").value)
-        data.append("category", document.querySelector("#workCategory").value)
+        data.append("category", parseInt(document.querySelector("#workCategory").value, 10))
 
         async function sendWork(){
             await fetch("http://localhost:5678/api/works",{
@@ -315,16 +333,25 @@ async function envoieTravail(){
                 body: data
             })
             .then(res => {
-                try{
-                    if (res.ok === true) {
-                    document.querySelector("#succesAdd").style.display = "inline"
-                    return res.json()
-                    }else{
-                    document.querySelector("#erreurAdd").style.display = "inline"
-                    }
-                  } catch (e) {
-                    console.error(e)
-                  }
+                if (res.ok === true) {
+                document.querySelector("#succesAdd").style.display = "inline"
+                return res.json()
+                }else{
+                document.querySelector("#erreurAdd").style.display = "inline"
+                }
+            })
+            .then(function (result){
+                travaux.push(result)
+                window.sessionStorage.setItem("works", JSON.stringify(travaux))
+                document.querySelector(".gallery").innerHTML =""
+                creerCarte(travaux)
+                document.querySelector("#adminWork").innerHTML =""
+                adminPanel(travaux)
+    
+                document.querySelector("#formulaireAjoutPhoto").reset()
+                hiddenDrop.style.display = "flex"
+                dropImage.style.display = "none"
+                dropImage.innerHTML = ""
             })
         }
         sendWork()

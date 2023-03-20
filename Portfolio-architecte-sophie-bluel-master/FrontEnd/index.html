@@ -14,6 +14,7 @@
 </head>
 
 <body>
+	<!--Barre du mode Admin-->
 	<div id="modeEdition">
 		<a href="" class="js-modifier">
 			<i class="fa-regular fa-pen-to-square"></i>
@@ -21,6 +22,7 @@
 		</a>
 		<button>publier les changements</button>
 	</div>
+	<!--Logo + Nav-->
 <header>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
@@ -34,6 +36,7 @@
 	</nav>
 </header>
 <main>
+	<!--Photo + présentation-->
 	<section id="introduction">
 		<figure>
 			<div id="adminDescription">
@@ -53,6 +56,7 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
+	<!--Portfolio-->
 	<section id="portfolio">
 		<div id="adminProjet">
 			<h2>Mes Projets</h2>
@@ -63,6 +67,7 @@
 				</a>
 			</div>
 		</div>
+	<!--Sous section Filtre-->
 		<div id="filtre">
 			<ul>
 				<li><button id="tous">Tous</button></li>
@@ -71,10 +76,12 @@
 				<li><button id="restaurant">Hôtels & restaurants</button></li>
 			</ul>
 		</div>
+	<!--Sous section travaux-->	
 		<div class="gallery">
 			
 		</div>
 	</section>
+	<!--Footer non travaillé-->
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
@@ -89,7 +96,9 @@
 		</form>
 	</section>
 </main>
+	<!--Création des modales uniquement disponible en mode Admin-->
 <aside id="modalAdmin" aria-hidden="true" role="dialog" aria-labelledby="modal" style="display:none">
+	<!--Première modale, ouverture via la page en mode Admin-->
 	<div id="modal">
 		<div class="closeButtonDiv">
 			<button class="closeModalButton"><i class="fa-solid fa-x"></i></i></button>
@@ -105,6 +114,7 @@
 			</div>
 		</div>
 	</div>
+	<!--Deuxième modale, ouverture via la première modale-->
 	<div id="modalAdd" style="display:none">
 		<div id="top">
 			<button id="lastPage"><i class="fa-solid fa-arrow-left"></i></button>
@@ -114,11 +124,17 @@
 		</div>
 		<h2>Ajout photo</h2>
 		<form action="" method="post" id="formulaireAjoutPhoto" enctype="multipart/form-data">
+	<!--Espace Drag & Drop-->		
 			<div class="drag-area">
-				<div class="icon"><i class="fa-regular fa-image"></i></div>
-				<button id="dragButton">+ Ajouter photo</button>
-				<p>jpg, png: 4mo max</p>
-				<input type="file"  id="dragInput" hidden>
+				<div class="dropImage">
+					
+				</div>
+				<div class="hiddenDrop">
+					<div class="icon"><i class="fa-regular fa-image"></i></div>
+					<button id="dragButton">+ Ajouter photo</button>
+					<p>jpg, png: 4mo max</p>
+					<input type="file"  id="dragInput" hidden>
+				</div>
 			</div>
 			<div id="addForm">
 				<label for="workTitle" class="labelForm">Titre</label>
