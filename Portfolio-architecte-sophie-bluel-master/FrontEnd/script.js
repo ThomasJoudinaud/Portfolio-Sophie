@@ -1,4 +1,4 @@
-import { setCookie } from "./script-connexion.js"
+import { setCookie } from "./cookie.js"
 
 // Récupérer les travaux de l'architecte via l'API ou par le sessionStorage
 let work = window.sessionStorage.getItem("works")
@@ -192,17 +192,22 @@ function adminPanel (travaux) {
         titreCarte.innerText = travail.title
 
         const trashButton = document.createElement("button")
-        trashButton.setAttribute("id", "trashClick")
+        trashButton.setAttribute("class", "trashClick")
+
+        const selectButton = document.createElement("button")
+        selectButton.setAttribute("class", "selectHover")
 
         galleryAdmin.append(carteAdmin)
         carteAdmin.append(trashButton)
+        carteAdmin.append(selectButton)
         carteAdmin.append(imageCarte)
         carteAdmin.append(titreCarte)
     }
 }
 adminPanel(travaux)
+
 // Suppression des travaux
-document.querySelectorAll("#trashClick").forEach( e => {
+document.querySelectorAll(".trashClick").forEach( e => {
     const result =  e.parentElement.dataset.id
     const gallery = e.parentElement
     e.addEventListener("click", (e) => {
@@ -316,45 +321,58 @@ document.querySelector("#lastPage").addEventListener("click", ()=> {
 
 async function envoieTravail(){
     const formInfo = document.querySelector("#formulaireAjoutPhoto")
+    const userTitle = document.querySelector("#workTitle")
+
+
     formInfo.addEventListener("submit", function(event) {
         event.preventDefault()
+        const userFile = file
+        const userEntry = userTitle.value.trim()
+        document.querySelector("#succesAdd").style.display = "none"
+        document.querySelector("#erreurAdd").style.display = "none"
 
-        let data = new FormData()
-        data.append("image", file)
-        data.append("title", document.querySelector("#workTitle").value)
-        data.append("category", parseInt(document.querySelector("#workCategory").value, 10))
-
-        async function sendWork(){
-            await fetch("http://localhost:5678/api/works",{
-                headers: {
-                    Authorization: "BEARER " + getCookie("token"),
-                },
-                method: "POST",
-                body: data
-            })
-            .then(res => {
-                if (res.ok === true) {
-                document.querySelector("#succesAdd").style.display = "inline"
-                return res.json()
-                }else{
-                document.querySelector("#erreurAdd").style.display = "inline"
-                }
-            })
-            .then(function (result){
-                travaux.push(result)
-                window.sessionStorage.setItem("works", JSON.stringify(travaux))
-                document.querySelector(".gallery").innerHTML =""
-                creerCarte(travaux)
-                document.querySelector("#adminWork").innerHTML =""
-                adminPanel(travaux)
+        //Vérification des données saisie
+        if(userFile === null || userFile === undefined || userEntry ==="" || userEntry === null){
+            console.error("Erreur: données entré dans le formulaire manquante.")
+            document.querySelector("#erreurAdd").style.display = "inline"
+            return
+        } else {
+            let data = new FormData()
+            data.append("image", file)
+            data.append("title", document.querySelector("#workTitle").value)
+            data.append("category", parseInt(document.querySelector("#workCategory").value, 10))
     
-                document.querySelector("#formulaireAjoutPhoto").reset()
-                hiddenDrop.style.display = "flex"
-                dropImage.style.display = "none"
-                dropImage.innerHTML = ""
-            })
+            async function sendWork(){
+                await fetch("http://localhost:5678/api/works",{
+                    headers: {
+                        Authorization: "BEARER " + getCookie("token"),
+                    },
+                    method: "POST",
+                    body: data
+                })
+                .then(res => {
+                    if (res.ok === true) {
+                    document.querySelector("#succesAdd").style.display = "inline"
+                    console.log("Envoie du formulaire réussi")
+                    return res.json()
+                    }
+                })
+                .then(function (result){
+                    travaux.push(result)
+                    window.sessionStorage.setItem("works", JSON.stringify(travaux))
+                    document.querySelector(".gallery").innerHTML =""
+                    creerCarte(travaux)
+                    document.querySelector("#adminWork").innerHTML =""
+                    adminPanel(travaux)
+        
+                    document.querySelector("#formulaireAjoutPhoto").reset()
+                    hiddenDrop.style.display = "flex"
+                    dropImage.style.display = "none"
+                    dropImage.innerHTML = ""
+                })
+            }
+            sendWork()
         }
-        sendWork()
     })
 }
 envoieTravail()

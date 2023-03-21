@@ -10,11 +10,11 @@
 	<script src="https://kit.fontawesome.com/45bf899a5a.js" crossorigin="anonymous"></script>
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script src="script.js" type="module" defer></script>
+	<script src="script.js" type="module"></script>
 </head>
 
 <body>
-	<!--Barre du mode Admin-->
+	<!-- [Ajout] Barre du mode Admin-->
 	<div id="modeEdition">
 		<a href="" class="js-modifier">
 			<i class="fa-regular fa-pen-to-square"></i>
@@ -22,7 +22,7 @@
 		</a>
 		<button>publier les changements</button>
 	</div>
-	<!--Logo + Nav-->
+	<!-- [Modifié] Logo + Nav-->
 <header>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
@@ -36,7 +36,7 @@
 	</nav>
 </header>
 <main>
-	<!--Photo + présentation-->
+	<!-- [Modifié] Photo + présentation-->
 	<section id="introduction">
 		<figure>
 			<div id="adminDescription">
@@ -56,7 +56,7 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
-	<!--Portfolio-->
+	<!-- [Modifié] Portfolio-->
 	<section id="portfolio">
 		<div id="adminProjet">
 			<h2>Mes Projets</h2>
@@ -67,7 +67,7 @@
 				</a>
 			</div>
 		</div>
-	<!--Sous section Filtre-->
+	<!-- [Ajout] Sous section Filtre-->
 		<div id="filtre">
 			<ul>
 				<li><button id="tous">Tous</button></li>
@@ -76,12 +76,12 @@
 				<li><button id="restaurant">Hôtels & restaurants</button></li>
 			</ul>
 		</div>
-	<!--Sous section travaux-->	
+	<!-- [Non modifié] Sous section travaux-->	
 		<div class="gallery">
 			
 		</div>
 	</section>
-	<!--Footer non travaillé-->
+	<!-- [Non modifié] Footer non travaillé-->
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
@@ -96,12 +96,12 @@
 		</form>
 	</section>
 </main>
-	<!--Création des modales uniquement disponible en mode Admin-->
-<aside id="modalAdmin" aria-hidden="true" role="dialog" aria-labelledby="modal" style="display:none">
+	<!-- [Ajout] Création des modales uniquement disponible en mode Admin-->
+<aside id="modalAdmin" aria-hidden="true" aria-labelledby="modal" style="display:none">
 	<!--Première modale, ouverture via la page en mode Admin-->
 	<div id="modal">
 		<div class="closeButtonDiv">
-			<button class="closeModalButton"><i class="fa-solid fa-x"></i></i></button>
+			<button class="closeModalButton"><i class="fa-solid fa-x"></i></button>
 		</div>
 		<div id="modalContent">
 			<h2>Galerie photo</h2>
@@ -123,7 +123,7 @@
 			</div>
 		</div>
 		<h2>Ajout photo</h2>
-		<form action="" method="post" id="formulaireAjoutPhoto" enctype="multipart/form-data">
+		<form method="post" id="formulaireAjoutPhoto" enctype="multipart/form-data">
 	<!--Espace Drag & Drop-->		
 			<div class="drag-area">
 				<div class="dropImage">
