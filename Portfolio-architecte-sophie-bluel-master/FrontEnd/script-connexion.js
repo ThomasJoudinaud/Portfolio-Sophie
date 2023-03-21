@@ -41,6 +41,8 @@ async function logIn() {
                 if (r.ok === true) {
                   console.log("Authentification réussi")
                   return r.json()
+                }else{
+                  console.error("Erreur serveur")
                 }
                 console.error("Erreur: e-mail ou mot de passe incorrect")
                 errorMDP.style.display = "block"  

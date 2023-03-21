@@ -1,30 +1,26 @@
 import { setCookie } from "./cookie.js"
 
 // Récupérer les travaux de l'architecte via l'API ou par le sessionStorage
-let work = window.sessionStorage.getItem("works")
-async function fetchAPI(){
-    if(work === null) {
-        await fetch("http://localhost:5678/api/works", {
-        method:"GET"
-    })
-        .then(res => {
-            if(res.ok){   
-                return res.json()
-            } else {
-                console.log("Erreur lors de la récupération des fichiers via l'API")
-            }
-        })
-        .then(result => {
-            window.sessionStorage.setItem("works", JSON.stringify(result))
-            location.reload()
-        })
-    } else {
-        work = JSON.parse(work)
-    }
-}
-fetchAPI()
-const travaux = Object.values(work)
+let travaux = window.sessionStorage.getItem("works")
 
+if(travaux === null) {
+    fetch("http://localhost:5678/api/works", {
+    method:"GET"
+})
+    .then(res => {
+        if(res.ok){   
+            return res.json()
+        } else {
+            console.log("Erreur lors de la récupération des fichiers via l'API")
+        }
+    })
+    .then(result => {
+        window.sessionStorage.setItem("works", JSON.stringify(result))
+        location.reload()
+    })
+} else {
+    travaux = JSON.parse(travaux)
+}
 
 // fonction qui va me générer les cartes automatiquement avec comme base les travaux de Sophie
 function creerCarte (travaux) {
@@ -98,7 +94,6 @@ function deleteCookie(name){
 const logout = document.querySelector("#logoutButton")
 logout.addEventListener("click", function(){
     deleteCookie("token")
-    window.sessionStorage.removeItem("localWork")
 })
 
 
@@ -210,16 +205,19 @@ function adminPanel (travaux) {
 adminPanel(travaux)
 
 // Suppression des travaux
-document.querySelectorAll(".trashClick").forEach( e => {
-    const result =  e.parentElement.dataset.id
-    const gallery = e.parentElement
-    e.addEventListener("click", (e) => {
-        e.preventDefault()
-        gallery.remove()
-        deleteLocalWork(result)
-        deleteWork(result)
+function trash(){
+    document.querySelectorAll(".trashClick").forEach( e => {
+        const result =  e.parentElement.dataset.id
+        const gallery = e.parentElement
+        e.addEventListener("click", (e) => {
+            e.preventDefault()
+            gallery.remove()
+            deleteLocalWork(result)
+            deleteWork(result)
+        })
     })
-})
+}
+trash()
 function deleteLocalWork(id) {
     for ( let i = 0; i < travaux.length; i++){
         let travail = travaux[i]
@@ -362,6 +360,8 @@ async function envoieTravail(){
                     console.log("Envoie du formulaire réussi")
                     file = null
                     return res.json()
+                    }else{
+                        console.error("Erreur serveur")
                     }
                 })
                 .then(function (result){
@@ -371,12 +371,14 @@ async function envoieTravail(){
                     creerCarte(travaux)
                     document.querySelector("#adminWork").innerHTML =""
                     adminPanel(travaux)
-        
+                    trash()
+
                     document.querySelector("#formulaireAjoutPhoto").reset()
                     hiddenDrop.style.display = "flex"
                     dropImage.style.display = "none"
                     dropImage.innerHTML = ""
                 })
+
             }
             sendWork()
         }
