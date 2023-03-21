@@ -156,6 +156,9 @@ const closeModal = function (e) {
     document.querySelector("#modalAdd").style.display = "none"
     document.querySelector("#modal").style.display = null
     defaultModal = null
+    file = null
+    document.querySelector("#succesAdd").style.display = "none"
+    document.querySelector("#erreurAdd").style.display = "none"
     hiddenDrop.style.display = "flex"
     dropImage.style.display = "none"
     dropImage.innerHTML = ""
@@ -312,6 +315,9 @@ document.querySelector("#addButton").addEventListener("click", ()=> {
 document.querySelector("#lastPage").addEventListener("click", ()=> {
     document.querySelector("#modalAdd").style.display = "none"
     document.querySelector("#modal").style.display = null
+    file = null
+    document.querySelector("#succesAdd").style.display = "none"
+    document.querySelector("#erreurAdd").style.display = "none"
     hiddenDrop.style.display = "flex"
     dropImage.style.display = "none"
     dropImage.innerHTML = ""
@@ -354,6 +360,7 @@ async function envoieTravail(){
                     if (res.ok === true) {
                     document.querySelector("#succesAdd").style.display = "inline"
                     console.log("Envoie du formulaire réussi")
+                    file = null
                     return res.json()
                     }
                 })
