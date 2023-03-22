@@ -218,6 +218,7 @@ function trash(){
     })
 }
 trash()
+
 function deleteLocalWork(id) {
     for ( let i = 0; i < travaux.length; i++){
         let travail = travaux[i]
@@ -243,7 +244,7 @@ await fetch("http://localhost:5678/api/works/" + e, {
         if (res.ok){
             console.log("Fichier supprimer")
         }else{
-            console.log("Erreur lors de la suppression")
+            console.error("Erreur lors de la suppression")
         }
     })
 }
