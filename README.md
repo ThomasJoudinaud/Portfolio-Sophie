@@ -9,6 +9,7 @@ l'autre juste avec le front.
 avec celui qui contient l'ensemble du fichier lancer le terminal
 => cd Backend
 => npm start
+!! attention, bien vérifier qu'express est installé.
 
 puis lancer live server avec l'autre VSCode, celui qui contient uniquement le frontend.
 
